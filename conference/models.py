@@ -24,9 +24,9 @@ class SiteUser(User):
 
 class SponsorType(models.Model):
 
+    interesting = models.ManyToManyField(Area)
     name = models.CharField(max_length=256)
     amount = models.PositiveIntegerField()
-    # just for convenience, we can count all invited instead
     max_invites = models.SmallIntegerField()
 
     def __unicode__(self):
@@ -46,7 +46,6 @@ class Sponsor(SiteUser):
 
 class Participant(SiteUser):
 
-    interesting = models.ManyToManyField(Area)
     invited = models.BooleanField(default=False)
     sponsor = models.ForeignKey(Sponsor)
 
