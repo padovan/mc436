@@ -22,6 +22,9 @@
 
 # Django settings for mc436 project.
 
+import os
+PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -89,9 +92,10 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'mc436.urls'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+	# Always use forward slashes, even on Windows.
+	# Don't forget to use absolute paths, not relative paths.
+	os.path.join(PROJECT_ROOT_PATH,'templates'),
 )
 
 INSTALLED_APPS = (
