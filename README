@@ -1,4 +1,4 @@
-pra fazer funcionar:
+To run this project
 
-python manage.py syncdb  # necessário ser feito localmente apenas uma vez!!
-python manage.py runserver  # abre o servidor na porta 8000, isso que faz rodar
+python manage.py syncdb  # do this just once. Create all the database
+python manage.py runserver  # Run the project. Start a server on localhost (default port: 8000)
