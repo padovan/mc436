@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt_BR">
+<head>
+	<title>{% block title %}{Conference System}{% endblock %} - {% block subtitle %}{% endblock %}</title>
+	<link href="default.css" rel="stylesheet" type="text/css" media="screen" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+</head>
+<body>
+
+<!-- start header -->
+<div id="wrapper">
+<div id="header">
+	<div id="logo">
+		<h1>{% block page_title %}Conference{% endblock %}</h1>
+		<p>{% block page_subtitle %}System to manage conferences {% endblock %}</p>
+	</div>
+</div>
+<!-- end header -->
+
+<!-- start menu -->
+<div id="menu">
+	<ul>
+		<li><a href="#">blah</a></li>
+		<li><a href="/logout/">Logout</a></li> <!-- css for li 'class="current_page_item"' -->
+	</ul>
+</div>
+<!-- end menu -->
+
+<!-- start page -->
+<div id="page">
+	<!-- start content -->
+	<div id="content">
+	{% block content %}{% endblock %}
+	</div>
+	<!-- end content -->
+</div>
+<!-- end page -->
+
+<!-- start footer -->
+<div id="footer">
+	{% block footer %}
+	{% endblock %}
+	<p class="legal">
+		2009 <a href="#">Conference</a>
+		&nbsp;&nbsp;&bull;&nbsp;&nbsp;
+		Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>
+</div>
+<!-- end footer -->
+</body>
+</html>
+
