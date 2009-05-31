@@ -1,0 +1,4 @@
+pra fazer funcionar:
+
+python manage.py syncdb  # necessário ser feito localmente apenas uma vez!!
+python manage.py runserver  # abre o servidor na porta 8000, isso que faz rodar
