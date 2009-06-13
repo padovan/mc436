@@ -42,6 +42,8 @@ urlpatterns = patterns('',
 	# Uncomment the next line to enable the admin:
 	(r'^admin/(.*)', admin.site.root),
 	(r'^$', views.home),
+	(r'^user_create/$', views.user_create),
+	(r'^text_submit/$', views.user_create),
 	(r'^(.*/)?auth/$', views.login_auth),
 	(r'^logout/$', views.logout),
 
