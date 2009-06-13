@@ -23,7 +23,8 @@
 <div id="menu">
 	<ul>
 		<li><a href="#">blah</a></li>
-		{% ifequal user_type "A"%}<a href="/user_create/">Cadastre-se</a>{% endif %}
+		{% ifequal user_type "A"%}<a href="/user_create/">Cadastre-se</a>
+		{% endifequal %}
 		<li><a href="/logout/">Logout</a></li> <!-- css for li 'class="current_page_item"' -->
 	</ul>
 </div>
