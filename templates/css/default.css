@@ -168,6 +168,23 @@ img.left {
 	display: none;
 }
 
+/* Error */
+div.errorlist {
+	float: right;
+	width: 200px;
+}
+
+div.error {
+	color: red;
+	font-weight: bold;
+}
+
+/* Form */
+table.form {
+	width : 600px;
+	float : top;
+}
+
 /* Login */
 table.login {
 	display: block;
