@@ -25,8 +25,12 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from conference import models
 
-def get_default_template_vars(req):
-	return {'user_type' : req.user.user_type, 'user_name' : req.user.username,}
+def get_default_template_vars(request):
+	if request.user.is_authenticated():
+		return {'user_type' : request.user.user_type,
+				'user_name' : request.user.username,}
+	else:
+		return {}
 
 def show_user_page(request):
 		return render_to_response('conference/user_page.html', {})
@@ -35,7 +39,7 @@ def home(request):
 	if request.user.is_authenticated():
 		return show_user_page(request)
 	else:
-		ret = get_default_template_vars(request) + {'error' : False,}
+		ret = get_default_template_vars(request).update({'error' : False,})
 		return render_to_response('conference/home.html', ret)
 
 
