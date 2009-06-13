@@ -30,18 +30,19 @@ def get_default_template_vars(request):
 	if request.user.is_authenticated():
 		return {'user_type' : request.user.user_type,
 			'user_name' : request.user.username,}
+			'error' : False,}
 	else:
 		return {'user_type' : 'A',}
 
 def show_user_page(request):
-		return render_to_response('conference/user_page.html', {})
+		ret = get_default_template_vars(request)
+		return render_to_response('conference/user_page.html', ret)
 
 def home(request):
 	if request.user.is_authenticated():
 		return show_user_page(request)
 	else:
 		ret = get_default_template_vars(request)
-		ret.update({'error' : False,})
 		return render_to_response('conference/home.html', ret)
 
 
@@ -57,7 +58,8 @@ def login_auth(request, a):
 			# Show same error as an exception
 			raise
 	except:
-		return render_to_response('conference/home.html', {'error' : True,})
+		ret = get_default_template_vars(request)
+		return render_to_response('conference/home.html', ret)
 
 def user_create(request):
 	try:
