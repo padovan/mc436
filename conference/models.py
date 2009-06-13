@@ -33,15 +33,23 @@ class Area(models.Model):
 
 
 class SiteUser(User):
+	CHOICES = (
+		('U', 'SiteUser'),
+		('S', 'Sponsor'),
+		('T', 'Staff'),
+		('P', 'Participant'),
+		('E', 'Speaker'),
+		('R', 'Reviewer'),
+	)
 
+	user_type= models.CharField(max_length=1, choices=CHOICES)
 	cpf = models.CharField(max_length=14)
 	organization = models.CharField(max_length=256)
 	newsletter = models.BooleanField()
-	#FIXME: we will not implement this now
-	#email_verified = models.BooleanField()
+	email_verified = models.BooleanField()
 
 	def __unicode__(self):
-		return self.username
+		return self.username, self.user_type
 
 
 class SponsorType(models.Model):
@@ -67,33 +75,20 @@ class Sponsor(SiteUser):
 
 
 class Participant(SiteUser):
+	area = models.ManyToManyField(Area)
 
-	invited = models.BooleanField(default=False)
-	sponsor = models.ForeignKey(Sponsor)
-
-	def __unicode__(self):
-		return self.username
-
+class Staff(Participant):
+	pass
 
 class Speaker(Participant):
-
 	# FIXME: We are using Char field to represent a File field (i.e. 'migueh')
 	cv = models.CharField(max_length=65536)
 
-	def __unicode__(self):
-		return self.username
-
-
 class Reviewer(Participant):
-
 	status = models.BooleanField()
-
-	def __unicode__(self):
-		return self.username
-
+	deadline = models.DateField()
 
 class Text(models.Model):
-
 	title = models.CharField(max_length=256)
 	# FIXME: We are using Char field to represent a File field (i.e. 'migueh')
 	content = models.CharField(max_length=65536)
