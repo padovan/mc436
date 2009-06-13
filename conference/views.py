@@ -31,7 +31,7 @@ def get_default_template_vars(request):
 		return {'user_type' : request.user.user_type,
 			'user_name' : request.user.username,}
 	else:
-		return {'user_type' : 'A'}
+		return {'user_type' : 'A',}
 
 def show_user_page(request):
 		return render_to_response('conference/user_page.html', {})
