@@ -22,6 +22,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 
 class Area(models.Model):
 
@@ -90,6 +91,10 @@ class Reviewer(Participant):
 	status = models.BooleanField()
 	deadline = models.DateField()
 
+class ReviewerForm(ModelForm):
+	class Meta:
+		model = Reviewer
+
 class Text(models.Model):
 	title = models.CharField(max_length=256)
 	# FIXME: We are using Char field to represent a File field (i.e. 'migueh')
@@ -109,6 +114,9 @@ class Text(models.Model):
 	def __unicode__(self):
 		return self.title
 
+class TextForm(ModelForm):
+	class Meta:
+		model = Text
 
 class ConferenceSettings(models.Model):
 	max_reviewers = models.PositiveIntegerField()
