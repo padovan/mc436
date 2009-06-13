@@ -23,6 +23,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm
 
 class Area(models.Model):
 
@@ -120,3 +121,12 @@ class ConferenceSettings(models.Model):
 
 	def __unicode__(self):
 		return None
+
+
+class SiteUserForm(UserCreationForm):
+
+	class Meta:
+		model = SiteUser
+		fields = ('first_name', 'last_name', 'username',
+				'email', 'cpf', 'organization',
+				'newsletters')

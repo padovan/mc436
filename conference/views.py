@@ -26,6 +26,15 @@ from django.shortcuts import render_to_response
 from conference import models
 from django.forms.models import modelformset_factory
 from django.contrib.admin.views.decorators import staff_member_required
+from django.forms.util import ErrorList
+
+class DivErrorList(ErrorList):
+
+	def __unicode__(self):
+		return self.as_divs()
+	def as_divs(self):
+		if not self: return u''
+		return u'<div class="errorlist">%s</div>' % ''.join([u'<div class="error">%s</div>' % e for e in self])
 
 def get_default_template_vars(request):
 	if request.user.is_authenticated():
@@ -68,9 +77,17 @@ def user_create(request):
 				fields = ('first_name', 'last_name', 'cpf',
 					'organization', 'newsletter'))
 		if request.method == 'POST':
-			formset = SiteUserFormSet(request.POST, request.FILES)
+			formset = models.SiteUserForm(request.POST, request.FILES,
+					error_class=DivErrorList)
+			if formset.is_valid():
+				formset.save()
+				return render_to_response('conference/home.html')
+			else:
+				return render_to_response('conference/form.html',
+					{'formset' : formset, 'form_error' : True })
+
 		else:
-			formset = SiteUserFormSet()
+			formset = models.SiteUserForm()
 			return render_to_response('conference/form.html',
 					{'formset' : formset, 'error' : False })
 
