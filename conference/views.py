@@ -73,12 +73,7 @@ def login_auth(request, a):
 		return render_to_response('conference/home.html', ret)
 
 def user_create(request):
-	ret = get_default_template_vars(request)
 	try:
-		SiteUserFormSet = modelformset_factory(models.SiteUser,
-				fields = ('first_name', 'last_name', 'cpf',
-					'organization', 'newsletter'))
-		formset = False
 		if request.method == 'POST':
 			formset = models.SiteUserForm(request.POST, request.FILES,
 					error_class=DivErrorList)
