@@ -80,9 +80,6 @@ class Sponsor(SiteUser):
 class Participant(SiteUser):
 	area = models.ManyToManyField(Area)
 
-class Staff(Participant):
-	pass
-
 class Speaker(Participant):
 	# FIXME: We are using Char field to represent a File field (i.e. 'migueh')
 	cv = models.CharField(max_length=65536)
