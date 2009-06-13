@@ -22,10 +22,11 @@
 <!-- start menu -->
 <div id="menu">
 	<ul>
-		<li><a href="#">blah</a></li>
-		{% ifequal user_type "A"%}<a href="/user_create/">Cadastre-se</a>
+		{% ifequal user_type "A" %}
+			<li><a href="/user_create/">Register</a></li>
+		{% else %}
+			<li><a href="/logout/">Logout</a></li>
 		{% endifequal %}
-		<li><a href="/logout/">Logout</a></li> <!-- css for li 'class="current_page_item"' -->
 	</ul>
 </div>
 <!-- end menu -->
