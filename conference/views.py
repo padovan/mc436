@@ -24,13 +24,14 @@ from django.contrib import auth
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from conference import models
+from django.forms.models import modelformset_factory
 
 def get_default_template_vars(request):
 	if request.user.is_authenticated():
 		return {'user_type' : request.user.user_type,
-				'user_name' : request.user.username,}
+			'user_name' : request.user.username,}
 	else:
-		return {}
+		return {'user_type' : 'A'}
 
 def show_user_page(request):
 		return render_to_response('conference/user_page.html', {})
@@ -39,11 +40,12 @@ def home(request):
 	if request.user.is_authenticated():
 		return show_user_page(request)
 	else:
-		ret = get_default_template_vars(request).update({'error' : False,})
+		ret = get_default_template_vars(request)
+		ret.update({'error' : False,})
 		return render_to_response('conference/home.html', ret)
 
 
-def login_auth(request):
+def login_auth(request, a):
 	try:
 		username = request.POST['username']
 		password = request.POST['password']
@@ -58,7 +60,20 @@ def login_auth(request):
 		return render_to_response('conference/home.html', {'error' : True,})
 
 def user_create(request):
-	pass
+	try:
+		SiteUserFormSet = modelformset_factory(models.SiteUser,
+				fields = ('first_name', 'last_name', 'cpf',
+					'organization', 'newsletter'))
+		if request.method == 'POST':
+			formset = SiteUserFormSet(request.POST, request.FILES)
+		else:
+			formset = SiteUserFormSet()
+			return render_to_response('conference/form.html',
+					{'formset' : formset, 'error' : False })
+
+	except:
+		return render_to_response('conference/home.html', {'error' : True,})
+
 
 def text_submit(request):
 	pass

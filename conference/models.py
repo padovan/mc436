@@ -33,7 +33,8 @@ class Area(models.Model):
 
 
 class SiteUser(User):
-	CHOICES = (
+	user_choice = (
+		('A', 'Anonymous'),
 		('U', 'SiteUser'),
 		('S', 'Sponsor'),
 		('T', 'Staff'),
@@ -42,10 +43,11 @@ class SiteUser(User):
 		('R', 'Reviewer'),
 	)
 
-	user_type= models.CharField(max_length=1, choices=CHOICES)
+	user_type= models.CharField(max_length=1, choices=user_choice)
 	cpf = models.CharField(max_length=14)
 	organization = models.CharField(max_length=256)
-	newsletter = models.BooleanField()
+	newsletter = models.BooleanField(
+			help_text="Check the box to choose receive newsletters")
 	email_verified = models.BooleanField()
 
 	def __unicode__(self):
