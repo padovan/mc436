@@ -43,13 +43,6 @@ def home(request):
 		return show_user_page(request)
 	else:
 		ret = get_default_template_vars(request)
-<<<<<<< HEAD:conference/views.py
-<<<<<<< HEAD:conference/views.py
-=======
-		ret.update({'error' : False,})
->>>>>>> Initial work for form to create user:conference/views.py
-=======
->>>>>>> Made the return of default values common for all views:conference/views.py
 		return render_to_response('conference/home.html', ret)
 
 
