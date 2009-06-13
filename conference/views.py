@@ -39,7 +39,7 @@ class DivErrorList(ErrorList):
 def get_default_template_vars(request):
 	if request.user.is_authenticated():
 		return {'user_type' : request.user.user_type,
-			'user_name' : request.user.username,}
+			'user_name' : request.user.username,
 			'error' : False,}
 	else:
 		return {'user_type' : 'A',}
