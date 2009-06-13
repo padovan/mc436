@@ -25,6 +25,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from conference import models
 from django.forms.models import modelformset_factory
+from django.contrib.admin.views.decorators import staff_member_required
 
 def get_default_template_vars(request):
 	if request.user.is_authenticated():
@@ -78,7 +79,31 @@ def user_create(request):
 
 
 def text_submit(request):
-	pass
+	try:
+		TextFormSet = modelformset_factory(models.Text,
+				fields = ('title', 'content', 'area', 'type',))
+		if request.method == 'POST':
+			formset = TextFormSet(request.POST, request.FILES)
+		else:
+			formset = TextFormSet()
+			return render_to_response('conference/form.html',
+					{'formset' : formset, 'error' : False })
+
+	except:
+		return render_to_response('conference/home.html', {'error' : True,})
+
+@staff_member_required
+def pick_reviewers(request):
+	if request.method == 'POST':
+		if request.POST['text']:
+			revs = models.Reviewer.objects.filter(status=True)
+		else:
+			request.POST['reviewers']
+	else:
+		texts = models.Text.objects.filter(published=False)
+		ret = get_default_template_vars(request)
+		ret.update({'texts' : texts})
+		return render_to_response('conference/pick_reviewers.html', ret)
 
 def logout(request):
 	auth.logout(request)

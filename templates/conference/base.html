@@ -22,7 +22,7 @@
 <!-- start menu -->
 <div id="menu">
 	<ul>
-		{% ifequal user_type "A" %}
+		{% ifequal user_type "A" %} <!-- Anonimous user -->
 			<li><a href="/user_create/">Register</a></li>
 			<form action='/auth/' method='post'>
 				<table class="login">
@@ -36,8 +36,11 @@
 				</table>
 				<input type="hidden" name="next" value="{{ next|escape }}" />
 			</form>
-		{% else %}
-			<li><a href="/logout/">Logout</a></li>
+		{% else %} <!-- at least a SiteUser user -->
+			<li><a href="/text_submit/">Submit Text</a></li>
+			<div align="right">
+				<li><a href="/logout/">Logout</a></li>
+			</div>
 		{% endifequal %}
 	</ul>
 </div>
