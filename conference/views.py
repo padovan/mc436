@@ -27,6 +27,8 @@ from conference import models
 from django.forms.models import modelformset_factory
 from django.contrib.admin.views.decorators import staff_member_required
 from django.forms.util import ErrorList
+import os
+PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class DivErrorList(ErrorList):
 
@@ -94,25 +96,33 @@ def user_create(request):
 		ret = get_default_template_vars(request)
 		return render_to_response('conference/home.html', ret)
 
+
 def text_submit(request):
 	try:
-		TextFormSet = modelformset_factory(models.Text,
-				fields = ('title', 'content', 'area', 'type',))
 		if request.method == 'POST':
-			formset = TextFormSet(request.POST, request.FILES)
+			formset = models.TextForm(request.POST, request.FILES,
+				error_class=DivErrorList)
 			if formset.is_valid():
-				formset.save()
+				text = formset.save(commit=False)
+				site_user = models.SiteUser.objects.filter(
+					username = request.user.username)[0]
+				text.author = site_user
+				text.save()
 				ret = get_default_template_vars(request)
 				ret['text_submitted'] = True
 				return render_to_response('conference/home.html', ret)
-		# if any errors or unfilled form
-		formset = TextFormSet()
+			else:
+				ret = get_default_template_vars(request)
+				ret['formset'] = formset
+				return render_to_response('conference/form.html', ret)
+		formset = models.TextForm()
 		ret = get_default_template_vars(request)
 		ret['formset'] = formset
 		return render_to_response('conference/form.html', ret)
 	except:
 		ret = get_default_template_vars(request)
 		return render_to_response('conference/home.html', ret)
+
 
 @staff_member_required
 def pick_reviewers(request):
