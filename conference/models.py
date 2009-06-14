@@ -24,7 +24,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import UserCreationForm
 import os
 PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 

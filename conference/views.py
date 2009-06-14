@@ -85,13 +85,15 @@ def user_create(request):
 				ret['user_created'] = True
 				ret['login_name'] = user.username
 				return render_to_response('conference/home.html', ret)
-		# if any errors or unfilled form
-		if not formset:
-			# ok, so we have something from the POST
+			else:
+				ret = get_default_template_vars(request)
+				ret['formset'] = formset
+				return render_to_response('conference/form.html', ret)
+		else:
 			formset = models.SiteUserForm()
-		ret = get_default_template_vars(request)
-		ret['formset'] = formset
-		return render_to_response('conference/form.html', ret)
+			ret = get_default_template_vars(request)
+			ret['formset'] = formset
+			return render_to_response('conference/form.html', ret)
 	except:
 		ret = get_default_template_vars(request)
 		return render_to_response('conference/home.html', ret)
