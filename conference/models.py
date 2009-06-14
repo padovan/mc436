@@ -119,13 +119,10 @@ class TextForm(ModelForm):
 
 class ConferenceSettings(models.Model):
 	max_reviewers = models.PositiveIntegerField()
-
 	def __unicode__(self):
 		return None
 
-
 class SiteUserForm(UserCreationForm):
-
 	class Meta:
 		model = SiteUser
 		fields = ('first_name', 'last_name', 'username',
