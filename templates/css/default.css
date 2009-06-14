@@ -179,6 +179,15 @@ div.error {
 	font-weight: bold;
 }
 
+/* schedule */
+table.schedule {
+	text-align:center;
+	float: center;
+	width: 510px;
+	margin: 0;
+	padding: 6px 0 0 0px;
+}
+
 /* Form */
 table.form {
 	width : 600px;

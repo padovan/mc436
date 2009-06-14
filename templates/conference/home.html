@@ -1,47 +1,72 @@
 {% extends 'conference/base.html' %}
 {% block content %}
 	{% block error %}
-		{% if error %}
+		{% if login_error %}
 		<p class="post">user and/or password incorrect.</p>
 		{% endif %}
-
-		{% if not logged %}
-		<p class="post">you are not logged in</p>
+		{% if user_created %}
+		<p class="post">Successfully created login <b>{{ login_name }}</b>.</p>
+		{% endif %}
+		{% if text_submitted %}
+		<p class="post">Your text has been submitted successfully. We'll manage to review your
+			text and you'll receive soon some feedback about it</p>
 		{% endif %}
 	{% endblock %}
 	{% block more_content %}
 	{% endblock %}
 	{% block schedule %}
-		<div class="post">
-			<div class="title">
-				<h3>Schedule for the conference:</h3>
-			</div>
-			<table width=600>
-				<tr>
-					<th></td>
-					<th>
-						1st day
-					</th>
-					<th>
-						2nd day
-					</th>
-					<th>
-						3rd day
-					</th>
-				</tr>
-				<tr>
-					<th>10h</th>
-					<td>
-						Padovan: The force
-					</td>
-					<td>
-						Capistrano: Dancing salsa
-					</td>
-					<td>
-						-
-					</td>
-				</tr>
-			</table>
+		<div class="title">
+			<h3>Schedule for the conference:</h3>
 		</div>
+		<table class="schedule">
+			<tr>
+				<th></td>
+				<th>
+					1st day
+				</th>
+				<th>
+					2nd day
+				</th>
+				<th>
+					3rd day
+				</th>
+			</tr>
+			<tr>
+				<th>10h</th>
+				<td>
+					The force<br><b>Padovan</b>
+				</td>
+				<td>
+					Dancing salsa<br><b>Capistrano</b>
+				</td>
+				<td>
+					-
+				</td>
+			</tr>
+			<tr>
+				<th>12h</th>
+				<td>
+					Lunch
+				</td>
+				<td>
+					Lunch
+				</td>
+				<td>
+					Lunch
+				</td>
+			</tr>
+			<tr>
+				<th>14h</th>
+				<td>
+					Facing Browsers<br><b>Van Zuben</b>
+				</td>
+				<td>
+					Gone with the STORM<br><b>Scalet</b>
+				</td>
+				<td>
+					-
+				</td>
+			</tr>
+		</table>
 	{% endblock %}
 {% endblock %}
