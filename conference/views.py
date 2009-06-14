@@ -40,11 +40,14 @@ class DivErrorList(ErrorList):
 
 def get_default_template_vars(request):
 	if request.user.is_authenticated():
-		return {'user_type' : request.user.user_type,
+		site_user = models.SiteUser.objects.filter(
+				username = request.user.username)[0]
+		return {'user_type' : site_user.user_type,
 			'user_name' : request.user.username,
 			'error' : False,}
 	else:
 		return {'user_type' : 'A',}
+
 
 def show_user_page(request):
 		ret = get_default_template_vars(request)
