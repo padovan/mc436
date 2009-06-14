@@ -54,7 +54,7 @@ class SiteUser(User):
 	email_verified = models.BooleanField()
 
 	def __unicode__(self):
-		return self.username, self.user_type
+		return self.username
 
 
 class SponsorType(models.Model):
