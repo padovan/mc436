@@ -48,5 +48,6 @@ admin.site.register(Sponsor, SponsorAdmin)
 admin.site.register(Participant, SiteUserAdmin)
 admin.site.register(Speaker, SiteUserAdmin)
 admin.site.register(Reviewer, ReviewerAdmin)
+admin.site.register(Text, TextAdmin)
 
 

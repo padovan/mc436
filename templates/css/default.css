@@ -23,8 +23,8 @@ fieldset {
 	border: none;
 }
 
-input, textarea {
-	padding: 5px;
+input, textarea, select {
+	padding: 3px;
 	border: 1px solid #626262;
 	font: normal 1em "Trebuchet MS", Arial, Helvetica, sans-serif;
 }

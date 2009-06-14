@@ -24,7 +24,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import ModelForm
+import os
+PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class Area(models.Model):
 
@@ -54,7 +55,15 @@ class SiteUser(User):
 	email_verified = models.BooleanField()
 
 	def __unicode__(self):
-		return self.username, self.user_type
+		return self.username
+
+
+class SiteUserForm(UserCreationForm):
+	class Meta:
+		model = SiteUser
+		fields = ('first_name', 'last_name', 'username',
+				'email', 'cpf', 'organization',
+				'newsletters')
 
 
 class SponsorType(models.Model):
@@ -95,14 +104,17 @@ class ReviewerForm(ModelForm):
 		model = Reviewer
 
 class Text(models.Model):
+	text_type_choice = (
+		(True, 'Paper'),
+		(False, 'Abstract')
+	)
 	title = models.CharField(max_length=256)
-	# FIXME: We are using Char field to represent a File field (i.e. 'migueh')
-	content = models.CharField(max_length=65536)
+	file = models.FileField(upload_to=os.path.join(PROJECT_ROOT_PATH, 'files'))
 	area = models.ManyToManyField(Area)
-	type = models.BooleanField()
+	type = models.BooleanField(choices=text_type_choice, default=True)
 	author = models.ForeignKey(SiteUser)
 	#FIXME: we really need this optimization?
-	num_reviewers = models.PositiveSmallIntegerField()
+	num_reviewers = models.SmallIntegerField(default=0)
 	reviewer = models.ManyToManyField(Reviewer, related_name="reviewer_text")
 	# reviewed just for convenience, if false we need to search if all
 	# reviewers already reviewed the text
@@ -116,15 +128,11 @@ class Text(models.Model):
 class TextForm(ModelForm):
 	class Meta:
 		model = Text
+		fields = ('title', 'file', 'type', 'area',)
+
 
 class ConferenceSettings(models.Model):
 	max_reviewers = models.PositiveIntegerField()
 	def __unicode__(self):
 		return None
 
-class SiteUserForm(UserCreationForm):
-	class Meta:
-		model = SiteUser
-		fields = ('first_name', 'last_name', 'username',
-				'email', 'cpf', 'organization',
-				'newsletters')
