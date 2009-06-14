@@ -69,31 +69,35 @@ def login_auth(request, a):
 			raise
 	except:
 		ret = get_default_template_vars(request)
+		ret['login_error'] = True
 		return render_to_response('conference/home.html', ret)
 
 def user_create(request):
+	ret = get_default_template_vars(request)
 	try:
 		SiteUserFormSet = modelformset_factory(models.SiteUser,
 				fields = ('first_name', 'last_name', 'cpf',
 					'organization', 'newsletter'))
+		formset = False
 		if request.method == 'POST':
 			formset = models.SiteUserForm(request.POST, request.FILES,
 					error_class=DivErrorList)
 			if formset.is_valid():
-				formset.save()
-				return render_to_response('conference/home.html')
-			else:
-				return render_to_response('conference/form.html',
-					{'formset' : formset, 'form_error' : True })
-
-		else:
+				user = formset.save()
+				ret = get_default_template_vars(request)
+				ret['user_created'] = True
+				ret['login_name'] = user.username
+				return render_to_response('conference/home.html', ret)
+		# if any errors or unfilled form
+		if not formset:
+			# ok, so we have something from the POST
 			formset = models.SiteUserForm()
-			return render_to_response('conference/form.html',
-					{'formset' : formset, 'error' : False })
-
+		ret = get_default_template_vars(request)
+		ret['formset'] = formset
+		return render_to_response('conference/form.html', ret)
 	except:
-		return render_to_response('conference/home.html', {'error' : True,})
-
+		ret = get_default_template_vars(request)
+		return render_to_response('conference/home.html', ret)
 
 def text_submit(request):
 	try:
@@ -101,13 +105,19 @@ def text_submit(request):
 				fields = ('title', 'content', 'area', 'type',))
 		if request.method == 'POST':
 			formset = TextFormSet(request.POST, request.FILES)
-		else:
-			formset = TextFormSet()
-			return render_to_response('conference/form.html',
-					{'formset' : formset, 'error' : False })
-
+			if formset.is_valid():
+				formset.save()
+				ret = get_default_template_vars(request)
+				ret['text_submitted'] = True
+				return render_to_response('conference/home.html', ret)
+		# if any errors or unfilled form
+		formset = TextFormSet()
+		ret = get_default_template_vars(request)
+		ret['formset'] = formset
+		return render_to_response('conference/form.html', ret)
 	except:
-		return render_to_response('conference/home.html', {'error' : True,})
+		ret = get_default_template_vars(request)
+		return render_to_response('conference/home.html', ret)
 
 @staff_member_required
 def pick_reviewers(request):
