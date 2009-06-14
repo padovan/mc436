@@ -38,13 +38,20 @@ class DivErrorList(ErrorList):
 		if not self: return u''
 		return u'<div class="errorlist">%s</div>' % ''.join([u'<div class="error">%s</div>' % e for e in self])
 
-def get_default_template_vars(request):
+def get_site_user(request):
 	if request.user.is_authenticated():
 		site_user = models.SiteUser.objects.filter(
-				username = request.user.username)[0]
-		return {'user_type' : site_user.user_type,
-			'user_name' : request.user.username,
-			'error' : False,}
+				username = request.user.username)
+		if len(site_user) == 1:
+			return site_user[0]
+	return None
+
+def get_default_template_vars(request):
+	site_user = get_site_user(request)
+	if site_user:
+		ret = {'user_name' : request.user.username,}
+		ret['user_type'] = site_user.user_type
+		return ret
 	else:
 		return {'user_type' : 'A',}
 
@@ -54,7 +61,7 @@ def show_user_page(request):
 		return render_to_response('conference/user_page.html', ret)
 
 def home(request):
-	if request.user.is_authenticated():
+	if get_site_user(request):
 		return show_user_page(request)
 	else:
 		ret = get_default_template_vars(request)
@@ -68,6 +75,9 @@ def login_auth(request, a):
 		user = auth.authenticate(username=username, password=password)
 		if user is not None and user.is_active:
 			auth.login(request, user)
+			if not get_site_user(request):
+				auth.logout(request)
+				raise
 			return show_user_page(request)
 		else:
 			# Show same error as an exception
