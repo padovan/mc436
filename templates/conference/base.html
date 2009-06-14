@@ -22,26 +22,29 @@
 <!-- start menu -->
 <div id="menu">
 	<ul>
-		{% ifequal user_type "A" %} <!-- Anonimous user -->
-			<li><a href="/user_create/">Register</a></li>
-			<form action='/auth/' method='post'>
-				<table class="login">
-					<tr>
-						<td align="right"><label for="username">User:</label></td>
-						<td><input type="text" name="username" value="" id="username"></td>
-						<td align="right"><label for="password">Password:</label></td>
-						<td><input type="password" name="password" value="" id="password"></td>
-						<td align="right"><input type="submit" value="login" /></td>
-					</tr>
-				</table>
-				<input type="hidden" name="next" value="{{ next|escape }}" />
-			</form>
-		{% else %} <!-- at least a SiteUser user -->
-			<li><a href="/text_submit/">Submit Text</a></li>
-			<div align="right">
-				<li><a href="/logout/">Logout</a></li>
-			</div>
-		{% endifequal %}
+		{% block menu %}
+			<li><a href="/">Home</a></li>
+			{% ifequal user_type "A" %} <!-- Anonimous user -->
+				<li><a href="/user_create/">Register</a></li>
+				<form action='/auth/' method='post'>
+					<table class="login">
+						<tr>
+							<td align="right"><label for="username">User:</label></td>
+							<td><input type="text" name="username" value="" id="username"></td>
+							<td align="right"><label for="password">Password:</label></td>
+							<td><input type="password" name="password" value="" id="password"></td>
+							<td align="right"><input type="submit" value="login" /></td>
+						</tr>
+					</table>
+					<input type="hidden" name="next" value="{{ next|escape }}" />
+				</form>
+			{% else %} <!-- at least a SiteUser user -->
+				<li><a href="/text_submit/">Submit Text</a></li>
+				<div align="right">
+					<li><a href="/logout/">Logout</a></li>
+				</div>
+			{% endifequal %}
+		{% endblock %}
 	</ul>
 </div>
 <!-- end menu -->
