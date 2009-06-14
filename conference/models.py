@@ -57,6 +57,14 @@ class SiteUser(User):
 		return self.username
 
 
+class SiteUserForm(UserCreationForm):
+	class Meta:
+		model = SiteUser
+		fields = ('first_name', 'last_name', 'username',
+				'email', 'cpf', 'organization',
+				'newsletters')
+
+
 class SponsorType(models.Model):
 
 	interesting = models.ManyToManyField(Area)
@@ -126,9 +134,3 @@ class ConferenceSettings(models.Model):
 	def __unicode__(self):
 		return None
 
-class SiteUserForm(UserCreationForm):
-	class Meta:
-		model = SiteUser
-		fields = ('first_name', 'last_name', 'username',
-				'email', 'cpf', 'organization',
-				'newsletters')
