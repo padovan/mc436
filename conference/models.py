@@ -95,11 +95,15 @@ class ReviewerForm(ModelForm):
 		model = Reviewer
 
 class Text(models.Model):
+	text_type_choice = (
+		(True, 'Paper'),
+		(False, 'Abstract')
+	)
 	title = models.CharField(max_length=256)
 	# FIXME: We are using Char field to represent a File field (i.e. 'migueh')
 	content = models.CharField(max_length=65536)
 	area = models.ManyToManyField(Area)
-	type = models.BooleanField()
+	type = models.BooleanField(choices=text_type_choice)
 	author = models.ForeignKey(SiteUser)
 	#FIXME: we really need this optimization?
 	num_reviewers = models.PositiveSmallIntegerField()
