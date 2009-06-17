@@ -24,7 +24,6 @@ from django.contrib import auth
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from conference import models
-from django.forms.models import modelformset_factory
 from django.forms.util import ErrorList
 import os
 PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
