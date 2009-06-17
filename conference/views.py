@@ -91,7 +91,9 @@ def user_create(request):
 			formset = models.SiteUserForm(request.POST, request.FILES,
 					error_class=DivErrorList)
 			if formset.is_valid():
-				user = formset.save()
+				user = formset.save(commit=False)
+				user.user_type = 'U'
+				user.save()
 				ret = get_default_template_vars(request)
 				ret['user_created'] = True
 				ret['login_name'] = user.username
