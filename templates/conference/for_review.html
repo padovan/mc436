@@ -1,0 +1,28 @@
+{% extends 'conference/base.html' %}
+{% block content %}
+	{% block for_review %}
+
+	{% ifequal user_type 'R' %}
+		{% if text_reviewed %}
+		<p class="post">Successfully submitted <b>{{ text_title }}</b> review.</p>
+		{% endif %}
+
+		<div class="title">
+			<h3>Texts for Review:</h3>
+		</div>
+
+		{% for t in texts %}
+		<li><a href="/for_review/{{ t.id }}">{{ t.text.title }}</a></li>
+		{% endfor %}
+
+		{% if not texts %}
+			<p>No texts for review</p>
+		{% endif %}
+
+		<br />
+	{% else %}
+		<p class="post">You don't have permission to access this page.</p>
+	{% endifequal %}
+
+	{% endblock %}
+{% endblock %}

@@ -38,8 +38,15 @@
 					</table>
 					<input type="hidden" name="next" value="{{ next|escape }}" />
 				</form>
-			{% else %} <!-- at least a SiteUser user -->
+			{% endifequal %}
+			{% ifequal user_type "U" %} <!-- at least a SiteUser user -->
 				<li><a href="/text_submit/">Submit Text</a></li>
+				<div align="right">
+					<li><a href="/logout/">Logout</a></li>
+				</div>
+			{% endifequal %}
+			{% ifequal user_type "R" %}
+				<li><a href="/for_review/">Review Texts</a></li>
 				<div align="right">
 					<li><a href="/logout/">Logout</a></li>
 				</div>

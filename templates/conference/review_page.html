@@ -1,0 +1,33 @@
+{% extends 'conference/base.html' %}
+{% block content %}
+
+	{% ifequal user_type 'R' %}
+
+		<div class="title">
+			<h2>Review text:</h2>
+		</div>
+<br />
+
+<a href="/download/{{ text }}">Download text</a>
+
+<br />
+<br />
+<br />
+
+<form method="POST" action="" enctype="multipart/form-data" >
+	<table class="form">
+		<input type="hidden" name="review_id" value="{{ review_id }}" />
+		{{ formset }}
+		<tr><th></th>
+		<th><input type="submit" value="send" /></th></tr>
+	</table>
+</form>
+
+	{% else %}
+		<p class="post">You don't have permission to access this page.</p>
+	{% endifequal %}
+	
+
+
+
+{% endblock %}

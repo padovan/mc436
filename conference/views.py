@@ -25,7 +25,6 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from conference import models
 from django.forms.models import modelformset_factory
-from django.contrib.admin.views.decorators import staff_member_required
 from django.forms.util import ErrorList
 import os
 PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -138,19 +137,52 @@ def text_submit(request):
 		ret = get_default_template_vars(request)
 		return render_to_response('conference/home.html', ret)
 
-
-@staff_member_required
-def pick_reviewers(request):
-	if request.method == 'POST':
-		if request.POST['text']:
-			revs = models.Reviewer.objects.filter(status=True)
-		else:
-			request.POST['reviewers']
-	else:
-		texts = models.Text.objects.filter(published=False)
+def for_review(request, retadd = {}):
+	rev = models.Reviewer.objects.filter(
+			username = request.user.username)
+	if rev:
+		texts = models.Review.objects.filter(reviewed=False, reviewer=rev[0])
 		ret = get_default_template_vars(request)
-		ret.update({'texts' : texts})
-		return render_to_response('conference/pick_reviewers.html', ret)
+		ret['texts'] = texts
+		ret.update(retadd)
+		return render_to_response('conference/for_review.html', ret)
+	else:
+		ret = get_default_template_vars(request)
+		return render_to_response('conference/home.html', {})
+
+def review_text(request, review_id):
+	review = models.Review.objects.get(pk=review_id)
+	text = review.text
+	path = text.file.name.split('/')[-1]
+	review_form = models.ReviewForm()
+	if request.method == 'POST':
+		formset = models.ReviewForm(request.POST, request.FILES,
+			error_class=DivErrorList)
+		review_id = request.POST['review_id']
+		review = models.Review.objects.get(pk=review_id)
+		if formset.is_valid():
+			r = formset.save(commit=False)
+			rev = models.Reviewer.objects.filter(
+				username = request.user.username)[0]
+			review.reviewed = True
+			review.comment = r.comment
+			review.rate = r.rate
+			review.save()
+			ret = {}
+			ret['text_title'] = review.text.title
+			ret['text_reviewed'] = True
+			return for_review(request, ret)
+		else:
+			ret = get_default_template_vars(request)
+			ret['formset'] = formset
+			return render_to_response('conference/review_page.html', ret)
+	formset = models.ReviewForm()
+	ret = get_default_template_vars(request)
+	ret['formset'] = formset
+	ret['text'] = path
+	ret['review_id'] = review_id
+	return render_to_response('conference/review_page.html', ret)
+
 
 def logout(request):
 	auth.logout(request)
