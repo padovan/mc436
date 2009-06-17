@@ -35,6 +35,11 @@ class ReviewerAdmin(admin.ModelAdmin):
     ordering = ['username', 'status']
     list_filter = ['status']
 
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('reviewer', 'text', 'rate', 'comment')
+    search_fields = ['reviewer', 'text', 'rate', 'comment']
+    ordering = ['rate']
+
 class TextAdmin(admin.ModelAdmin):
     list_display = ('title',)
     search_fields = ['title']
@@ -48,6 +53,7 @@ admin.site.register(Sponsor, SponsorAdmin)
 admin.site.register(Participant, SiteUserAdmin)
 admin.site.register(Speaker, SiteUserAdmin)
 admin.site.register(Reviewer, ReviewerAdmin)
+admin.site.register(Review, ReviewAdmin)
 admin.site.register(Text, TextAdmin)
 
 

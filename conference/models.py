@@ -92,16 +92,11 @@ class Participant(SiteUser):
 	area = models.ManyToManyField(Area)
 
 class Speaker(Participant):
-	# FIXME: We are using Char field to represent a File field (i.e. 'migueh')
 	cv = models.CharField(max_length=65536)
 
 class Reviewer(Participant):
 	status = models.BooleanField()
 	deadline = models.DateField()
-
-class ReviewerForm(ModelForm):
-	class Meta:
-		model = Reviewer
 
 class Text(models.Model):
 	text_type_choice = (
@@ -113,12 +108,7 @@ class Text(models.Model):
 	area = models.ManyToManyField(Area)
 	type = models.BooleanField(choices=text_type_choice, default=True)
 	author = models.ForeignKey(SiteUser)
-	#FIXME: we really need this optimization?
-	num_reviewers = models.SmallIntegerField(default=0)
-	reviewer = models.ManyToManyField(Reviewer, related_name="reviewer_text")
-	# reviewed just for convenience, if false we need to search if all
-	# reviewers already reviewed the text
-	reviewed = models.BooleanField(default=False)
+	num_review = models.SmallIntegerField(default=0)
 	accepted = models.BooleanField(default=False)
 	published = models.BooleanField(default=False)
 
@@ -129,6 +119,23 @@ class TextForm(ModelForm):
 	class Meta:
 		model = Text
 		fields = ('title', 'file', 'type', 'area',)
+
+
+class Review(models.Model):
+	reviewer = models.ForeignKey(Reviewer)
+	text = models.ForeignKey(Text)
+	rate = models.SmallIntegerField()
+	comment = models.TextField()
+	reviewed = models.BooleanField(default=False)
+
+	def __unicode__(self):
+		return self.text.title
+
+
+class ReviewForm(ModelForm):
+	class Meta:
+		model = Review
+		fields = ('rate', 'comment')
 
 
 class ConferenceSettings(models.Model):
