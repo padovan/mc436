@@ -175,10 +175,12 @@ def review_text(request, review_id):
 			return for_review(request, ret)
 		else:
 			ret = get_default_template_vars(request)
+			ret['title'] = text.title
 			ret['formset'] = formset
 			return render_to_response('conference/review_page.html', ret)
 	formset = models.ReviewForm()
 	ret = get_default_template_vars(request)
+	ret['title'] = text.title
 	ret['formset'] = formset
 	ret['text'] = path
 	ret['review_id'] = review_id
