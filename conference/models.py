@@ -47,12 +47,16 @@ class SiteUser(User):
 		('R', 'Reviewer'),
 	)
 
+	first_name = models.CharField(max_length=256)
+	last_name = models.CharField(max_length=256)
 	user_type= models.CharField(max_length=1, choices=user_choice)
-	cpf = models.CharField(max_length=14)
+	cpf = models.IntegerField()
 	organization = models.CharField(max_length=256)
+	email = models.EmailField(null=False, verbose_name="E-mail address")
 	newsletter = models.BooleanField(
 			help_text="Check the box to choose receive newsletters")
-	email_verified = models.BooleanField()
+	accept_terms = models.BooleanField(
+			help_text="I accept the terms of use")
 
 	def __unicode__(self):
 		return self.username
@@ -63,7 +67,7 @@ class SiteUserForm(UserCreationForm):
 		model = SiteUser
 		fields = ('first_name', 'last_name', 'username',
 				'email', 'cpf', 'organization',
-				'newsletters')
+				'newsletter', 'accept_terms')
 
 
 class SponsorType(models.Model):
