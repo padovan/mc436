@@ -110,12 +110,14 @@ def user_create(request):
 				return render_to_response('conference/home.html', ret)
 			else:
 				ret = get_default_template_vars(request)
-				ret['formset'] = formset
+				formatted = insert_term_text(formset)
+				ret['formset'] = formatted
 				return render_to_response('conference/form.html', ret)
 		else:
 			formset = models.SiteUserForm()
 			ret = get_default_template_vars(request)
-			ret['formset'] = formset
+			formatted = insert_term_text(formset)
+			ret['formset'] = formatted
 			return render_to_response('conference/form.html', ret)
 	except:
 		ret = get_default_template_vars(request)
