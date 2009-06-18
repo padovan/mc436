@@ -22,8 +22,8 @@
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
+from django import forms
 import os
 PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -55,14 +55,14 @@ class SiteUser(User):
 	email = models.EmailField(null=False, verbose_name="E-mail address")
 	newsletter = models.BooleanField(
 			help_text="Check the box to choose receive newsletters")
-	accept_terms = models.BooleanField(
-			help_text="I accept the terms of use")
 
 	def __unicode__(self):
 		return self.username
 
 
 class SiteUserForm(UserCreationForm):
+	accept_terms = forms.BooleanField(
+			help_text="I accept the terms of use")
 	class Meta:
 		model = SiteUser
 		fields = ('first_name', 'last_name', 'username',
@@ -119,10 +119,12 @@ class Text(models.Model):
 	def __unicode__(self):
 		return self.title
 
-class TextForm(ModelForm):
+class TextForm(forms.ModelForm):
+	accept_terms = forms.BooleanField(
+			help_text="I accept the terms of use")
 	class Meta:
 		model = Text
-		fields = ('title', 'file', 'type', 'area',)
+		fields = ('title', 'file', 'type', 'area', 'accept_terms')
 
 
 class Review(models.Model):
@@ -136,7 +138,7 @@ class Review(models.Model):
 		return self.text.title
 
 
-class ReviewForm(ModelForm):
+class ReviewForm(forms.ModelForm):
 	class Meta:
 		model = Review
 		fields = ('rate', 'comment')
