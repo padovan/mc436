@@ -85,6 +85,16 @@ def login_auth(request, a):
 		ret['login_error'] = True
 		return render_to_response('conference/home.html', ret)
 
+def insert_term_text(formset):
+	from django.utils.safestring import mark_safe
+
+	table = formset.as_table().splitlines()
+	term_line = filter(lambda x : x.find('terms') >= 0, table)
+	if term_line:
+		line = '<tr><th><label for="id_accept_terms">Term:</label></th><td><textarea rows=5 cols=50>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea></td></tr>'
+		table.insert(table.index(term_line[0]), line)
+	return mark_safe('\n'.join(table))
+
 def user_create(request):
 	try:
 		if request.method == 'POST':
