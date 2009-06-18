@@ -95,6 +95,17 @@ def insert_term_text(formset):
 		table.insert(table.index(term_line[0]), line)
 	return mark_safe('\n'.join(table))
 
+def remove_br_from_boolean(text):
+	from django.utils.safestring import mark_safe
+
+	table = text.splitlines()
+	bool_line = filter(lambda x : x.find('checkbox') >= 0, table)
+	if bool_line:
+		for line in bool_line:
+			new_line = line.replace('<br />','')
+			table[table.index(line)] = new_line
+	return mark_safe('\n'.join(table))
+
 def user_create(request):
 	try:
 		if request.method == 'POST':
