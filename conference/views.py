@@ -127,7 +127,7 @@ def user_create(request):
 		else:
 			formset = models.SiteUserForm()
 			ret = get_default_template_vars(request)
-			formatted = insert_term_text(formset)
+			formatted = remove_br_from_boolean(insert_term_text(formset))
 			ret['formset'] = formatted
 			return render_to_response('conference/form.html', ret)
 	except:
